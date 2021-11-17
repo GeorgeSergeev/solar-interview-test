@@ -13,7 +13,7 @@ public class SolarSample {
 
 	public static StringBuilder sb = new StringBuilder();
 
-	public List <String> doSomething(String parameter) {
+	public void doSomething(String parameter) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(parameter));
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
@@ -43,10 +43,8 @@ public class SolarSample {
 			}
 
 			br.close();
-			return uniqueWords;
 		} catch (IOException ex) {
 			Logger.getLogger(SolarSample.class.getName()).log(Level.SEVERE, null, ex);
-			return null;
 		}
 	}
 }
