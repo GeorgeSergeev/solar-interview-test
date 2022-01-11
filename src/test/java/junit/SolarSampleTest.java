@@ -1,19 +1,23 @@
 package junit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import interview.SolarSample;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SolarSampleTest {
 
+	private static final List<String> testWords = Arrays.asList("звон", "мышь", "хвост");
+	private static final String testFilePath = "src\\main\\resources\\test.txt";
+	private static final SolarSample solarSample = new SolarSample();
+
 	@Test
-	public void doSomethingTest() {
+	public void getUniqueWordsFromFileTest() {
 		System.out.println("Test");
-		SolarSample tester = new SolarSample();
-		tester.doSomething("src\\main\\resources\\test.txt");
+		assertEquals(testWords, solarSample.getUniqueWordsFromFile(testFilePath));
 	}
 
 }

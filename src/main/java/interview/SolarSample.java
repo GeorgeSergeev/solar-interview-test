@@ -10,29 +10,33 @@ import java.util.stream.Collectors;
 
 public class SolarSample {
 
-	public static StringBuilder sb = new StringBuilder();
+	private static final String regExp = "\\s|\\(|\\)|\\.|\\[|\\]|,|\\+|;|\\\\|\"|!|\\||/|=|\\*|@|<|>";
 
-	public void doSomething(String parameter) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(parameter));
+	public void printUniqueWordsFromFile(String filePath) {
+		getUniqueWordsFromFile(filePath).forEach(System.out::println);
+	}
+
+	public List<String> getUniqueWordsFromFile(String filePath){
+		return Arrays.stream(getWordsFromFile(filePath))
+				.collect(Collectors.groupingBy(w -> w, Collectors.counting()))
+				.entrySet().stream()
+				.filter(e -> e.getValue() == 1)
+				.map(Map.Entry::getKey)
+				.sorted()
+				.collect(Collectors.toList());
+	}
+
+	private String[] getWordsFromFile(String filePath){
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 				sb.append(line);
 				sb.append("\n");
 			}
-			String[] words = sb
-					.toString()
-					.split("\\s|\\(|\\)|\\.|\\[|\\]|,|\\+|;|\\\\|\"|!|\\||/|=|\\*|@|<|>");
-
-			Arrays.stream(words)
-					.collect(Collectors.groupingBy(w -> w, Collectors.counting()))
-					.entrySet().stream()
-					.filter(e -> e.getValue() == 1)
-					.map(Map.Entry::getKey)
-					.forEach(System.out::println);
-
-			br.close();
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			Logger.getLogger(SolarSample.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		return sb.toString().split(regExp);
 	}
 }
